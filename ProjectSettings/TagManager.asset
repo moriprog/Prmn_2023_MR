@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Straight
+  - Trun Right
+  - Trun Left
   layers:
   - Default
   - TransparentFX
