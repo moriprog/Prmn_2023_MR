@@ -16,6 +16,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         this.speed = 0.0002f;
-        transform.Translate(0, this.speed, 0);
+        transform.Translate(0, 0, -this.speed);
     }
 }
