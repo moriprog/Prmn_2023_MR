@@ -5,7 +5,7 @@ using UnityEngine;
 public class StraightScript : MonoBehaviour
 {
     private Rigidbody rb;
-    private float speed = 30f;
+    //private float speed = 30f;
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +15,8 @@ public class StraightScript : MonoBehaviour
 
     void Update()
     {
-        transform.position = new Vector3(0, 1, 0);
+        this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0.1f, 0);
+
     }
 
     // Update is called once per frame
