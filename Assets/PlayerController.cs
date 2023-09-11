@@ -15,7 +15,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.speed = 0.0002f;
-        transform.Translate(0, 0, -this.speed);
+        Rigidbody rb = this.GetComponent<Rigidbody>();  // rigidbodyを取得
+        //rb.constraints = RigidbodyConstraints.FreezeRotationX.None; //Rotaitionのxをオン
+        Vector3 now = rb.position;            // 座標を取得
+        now += new Vector3(0.0f, 0.0f, 0.05f);  // 前に少しずつ移動するように加算
+        rb.position = now; // 値を設定
+        //this.speed = 0.0002f;
+        //transform.Translate(0, 0, -this.speed);
+    }
+
+    void Straight()
+    {
+
     }
 }
