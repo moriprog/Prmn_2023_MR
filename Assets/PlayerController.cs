@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
             if (distanceTraveled >= moveDistance)
             {
                 rb.constraints =RigidbodyConstraints.FreezeRotationY;
+                Debug.Log("停止");
                 isMoving = false;
                 // Rigidbodyの速度をゼロに設定して停止させる
                 rb.velocity = Vector3.zero;
