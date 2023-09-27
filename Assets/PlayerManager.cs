@@ -6,49 +6,55 @@ public class PlayerManager : MonoBehaviour
 {
     public List<GameObject> touchedObjects;
 
+    public PlayerController playerController;
+
+    public GameObject TargetgameObject;
+
+    public int count;
+
     // Start is called before the first frame update
     void Start()
     {
         // リストを初期化
         touchedObjects = new List<GameObject>();
+        playerController = GetComponent<PlayerController>(); // フィールドに割り当てる
+        count = 0;
+
     }
 
     // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider obj)
     {
-        // オブジェクトがタグ別に処理される
-        foreach (GameObject obj in touchedObjects)
+        Debug.Log("衝突");
+        if (obj != null && obj.gameObject != null && count==0)
         {
-            if (obj.CompareTag("Stright"))
+            if (obj.gameObject.CompareTag("Straight"))
             {
-                // Strightタグの処理
-                Rigidbody rb = this.GetComponent<Rigidbody>();  // rigidbodyを取得
-                //rb.constraints = RigidbodyConstraints.FreezeRotationX.None; //Rotaitionのxをオン
-                Vector3 now = rb.position;            // 座標を取得
-                now += new Vector3(0.0f, 0.0f, 0.05f);  // 前に少しずつ移動するように加算
-                rb.position = now; // 値を設定
-                Debug.Log("Strightオブジェクトを処理します");
+                Debug.Log("straight反応");
+                TargetgameObject.GetComponent<PlayerController>().Straight();
+                count++;
             }
-            else if (obj.CompareTag("Lift"))
+            else if (obj.gameObject.CompareTag("Trun Left"))
             {
-                // Liftタグの処理
-                Rigidbody rb = this.GetComponent<Rigidbody>();  // rigidbodyを取得
-                //rb.constraints = RigidbodyConstraints.FreezeRotationX.None; //Rotaitionのxをオン
-                Vector3 now = rb.position;            // 座標を取得
-                now += new Vector3(0.0f, 0.05f, 0.0f);  // 前に少しずつ移動するように加算
-                rb.position = now; // 値を設定
-                Debug.Log("Liftオブジェクトを処理します");
+                Debug.Log("Left反応");
+                TargetgameObject.GetComponent<PlayerController>().Left();
+                count++;
             }
-            else if (obj.CompareTag("Right"))
+            else if (obj.gameObject.CompareTag("Trun Right"))
             {
-                // Rightタグの処理
-                Rigidbody rb = this.GetComponent<Rigidbody>();  // rigidbodyを取得
-                //rb.constraints = RigidbodyConstraints.FreezeRotationX.None; //Rotaitionのxをオン
-                Vector3 now = rb.position;            // 座標を取得
-                now += new Vector3(0.0f, -0.005f, 0.0f);  // 前に少しずつ移動するように加算
-                rb.position = now; // 値を設定
-                Debug.Log("Rightオブジェクトを処理します");
+                Debug.Log("Right反応");
+                TargetgameObject.GetComponent<PlayerController>().Right();
+                count++;
+            }
+            else
+            {
+                Debug.Log("タグ反応なし");
             }
         }
+        else
+        {
+            Debug.Log("CollisionオブジェクトがnullまたはgameObjectがnullです。");
+        }
     }
+
 }

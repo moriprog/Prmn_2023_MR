@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     float speed;
     Vector2 startPos;
     private Rigidbody rb;
-    private bool isMoving = true;
+    public bool isMoving = true;
     private float initialY; // 初期のy座標
     private float distanceTraveled = 0f; // 移動した距離
     public float rotationSpeed = 90f; // 回転速度（度/秒）
@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         initialY = transform.position.y; // 初期のy座標を保存
         Debug.Log("現在のy座標: " + initialY);
+        Vector3 vector = new Vector3(0,-90,-90);
     }
 
     // Update is called once per frame
@@ -40,24 +41,24 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(now.y);
         //this.speed = 0.0002f;
         //transform.Translate(0, 0, -this.speed);
-        if (isMoving && distanceTraveled < moveDistance && isRotating)
+        //if (isMoving && distanceTraveled < moveDistance && isRotating)
         {
-            isRotating = true;
-            Debug.Log("回転座標"+transform.localEulerAngles.x);
+            //isRotating = true;
+            //Debug.Log("回転座標"+transform.localEulerAngles.x);
              // z軸方向に45度回転する角速度を設定
-            Vector3 targetAngularVelocity = new Vector3(0, 0, -rotationSpeed);
-            rb.angularVelocity = targetAngularVelocity * Mathf.Deg2Rad; // 角速度はラジアン単位で設定する必要がある
+            //Vector3 targetAngularVelocity = new Vector3(0, 0, -rotationSpeed);
+            //rb.angularVelocity = targetAngularVelocity * Mathf.Deg2Rad; // 角速度はラジアン単位で設定する必要がある
 
              // 現在の回転角度を取得
-            float currentRotationAngle = transform.rotation.eulerAngles.x;
+            //float currentRotationAngle = transform.rotation.eulerAngles.x;
 
             // 目標の回転角度（90度）に達したら回転を停止
-            if (Mathf.Abs(currentRotationAngle ) < 1.0f)
-            { 
-                 rb.angularVelocity = Vector3.zero; // 角速度をゼロに設定して停止
-                 isRotating = false; // 回転を停止
-                 Debug.Log("回転停止");
-            }
+            //if (Mathf.Abs(currentRotationAngle ) < 1.0f)
+            //{ 
+                 //rb.angularVelocity = Vector3.zero; // 角速度をゼロに設定して停止
+                 //isRotating = false; // 回転を停止
+                 //Debug.Log("回転停止");
+            //}
 
             //GetComponent<Rigidbody>().angularVelocity = new Vector3();
             // x軸方向に移動
@@ -169,23 +170,13 @@ public class PlayerController : MonoBehaviour
 
     public void Right()
     {
+        Debug.Log("Rightメソッドが呼び出された");
         if (isRotating)
         {
-            isRotating = true;
-            // z軸方向に90度回転する角速度を設定
-            Vector3 targetAngularVelocity = new Vector3(0, 0, -rotationSpeed);
-            rb.angularVelocity = targetAngularVelocity * Mathf.Deg2Rad; // 角速度はラジアン単位で設定する必要がある
-
-            // 現在の回転角度を取得
-            float currentRotationAngle = transform.rotation.eulerAngles.z;
-
-            // 目標の回転角度（45度）に達したら回転を停止
-            if (Mathf.Abs(currentRotationAngle - targetRotationAngle) < 1.0f)
-            {
-                rb.angularVelocity = Vector3.zero; // 角速度をゼロに設定して停止
-                isRotating = false; // 回転を停止
-                Debug.Log("回転停止");
-            }
+            Debug.Log("右回転");
+            Quaternion rot = Quaternion.AngleAxis(-90, Vector3.up);
+            transform.rotation *= rot;
+            Debug.Log("回転停止");
         }
     }
 
@@ -193,6 +184,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isRotating)
         {
+            Debug.Log("左回転");
             isRotating = true;
             // z軸方向に-45度回転する角速度を設定
             Vector3 targetAngularVelocity = new Vector3(0, 0, rotationSpeed);
@@ -209,5 +201,9 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("回転停止");
             }
         }
+    }
+    public void callDebug()
+    {
+        Debug.Log("playerControllerの呼び出し");
     }
 }
