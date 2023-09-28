@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     // 移動速度
     public float moveSpeed = 0.145f;
+    public float moveSpeed2 = 0.3625f;
     // 移動する距離
     public float moveDistance = 0.145f;
 
@@ -235,11 +236,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("直進(2倍右)");
             // y軸方向に移動
-            Vector3 movement = new Vector3(moveSpeed*2, 0, 0);
+            //Vector3 movement = new Vector3(moveSpeed*2, 0, 0);
+            Vector3 movement = new Vector3(moveSpeed2, 0, 0);
             rb.MovePosition(transform.position + movement);
 
             // 移動した距離を更新
-            distanceTraveled += moveSpeed*2 * Time.deltaTime;
+            distanceTraveled += moveSpeed2 * Time.deltaTime;
 
             // 移動距離が目標距離以上になったら移動を停止
             if (distanceTraveled >= MoveDistance2)
@@ -274,7 +276,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //下を向いた場合での移動
-        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.x == -90)
+        else if (isMoving && distanceTraveled < MoveDistance2 && transform.localEulerAngles.x == -90)
         {
             Debug.Log("直進(2倍下)");
             // y軸方向に移動

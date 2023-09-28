@@ -5,10 +5,15 @@ using UnityEngine;
 public class GoalManager : MonoBehaviour
 {
     public GameObject UIgameobject;
+
+    public AudioSource audioSource;
+    private bool hasAudioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         UIgameobject.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -24,6 +29,8 @@ public class GoalManager : MonoBehaviour
         {
             Debug.Log("Player衝突");
             UIgameobject.SetActive(true);
+
+            audioSource.Play();
 
         }
     }
