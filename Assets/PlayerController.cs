@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     // 移動する距離
     public float moveDistance = 0.145f;
 
+    public float MoveDistance2 = 0.29f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         initialY = transform.position.y; // 初期のy座標を保存
         Debug.Log("現在のy座標: " + initialY);
-        Vector3 vector = new Vector3(0,-90,-90);
+        //Vector3 vector = new Vector3(0,-90,-90);
     }
 
     // Update is called once per frame
@@ -82,9 +84,13 @@ public class PlayerController : MonoBehaviour
 
     public void Straight()
     {
+        //Debug.Log(distanceTraveled);
+        //Debug.Log(moveDistance);
+        Debug.Log("Roatationx="+transform.localEulerAngles.x+"Roatationy="+transform.localEulerAngles.y);
         //上を向いた場合での移動
         if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.x==90)
         {
+            Debug.Log("直進(上)");
             // y軸方向に移動
             Vector3 movement = new Vector3(0, moveSpeed, 0);
             rb.MovePosition(transform.position + movement);
@@ -103,8 +109,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         //右を向いた場合での移動
-        else if(isMoving && distanceTraveled < moveDistance && transform.rotation.x == 0.375)
+        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.y == 270)
         {
+            Debug.Log("直進(右)");
             // y軸方向に移動
             Vector3 movement = new Vector3(moveSpeed, 0, 0);
             rb.MovePosition(transform.position + movement);
@@ -123,10 +130,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         //左を向いた場合での移動
-        else if(isMoving && distanceTraveled < moveDistance && transform.rotation.x == 0.375)
+        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.y == 90)
         {
+
+            Debug.Log("直進(左)");
             // y軸方向に移動
-            Vector3 movement = new Vector3(moveSpeed, 0, 0);
+            Vector3 movement = new Vector3(-moveSpeed, 0, 0);
             rb.MovePosition(transform.position + movement);
 
             // 移動した距離を更新
@@ -143,8 +152,9 @@ public class PlayerController : MonoBehaviour
             }
         }
         //下を向いた場合での移動
-        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.x == 268.688)
+        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.x == -90)
         {
+            Debug.Log("直進(下)");
             // y軸方向に移動
             Vector3 movement = new Vector3(0, -moveSpeed, 0);
             rb.MovePosition(transform.position + movement);
@@ -177,29 +187,116 @@ public class PlayerController : MonoBehaviour
             Quaternion rot = Quaternion.AngleAxis(-90, Vector3.up);
             transform.rotation *= rot;
             Debug.Log("回転停止");
+            Debug.Log("Roatationx=" + transform.localEulerAngles.x + "Roatationy=" + transform.localEulerAngles.y);
         }
     }
 
     public void Left()
     {
+        Debug.Log("Liftメソッドが呼び出された");
         if (isRotating)
         {
             Debug.Log("左回転");
-            isRotating = true;
-            // z軸方向に-45度回転する角速度を設定
-            Vector3 targetAngularVelocity = new Vector3(0, 0, rotationSpeed);
-            rb.angularVelocity = targetAngularVelocity * Mathf.Deg2Rad; // 角速度はラジアン単位で設定する必要がある
+            Quaternion rot = Quaternion.AngleAxis(90, Vector3.up);
+            transform.rotation *= rot;
+            Debug.Log("回転停止");
+            Debug.Log("Roatationx=" + transform.localEulerAngles.x + "Roatationy=" + transform.localEulerAngles.y);
+        }
+    }
 
-            // 現在の回転角度を取得
-            float currentRotationAngle = transform.rotation.eulerAngles.z;
+    public void doubleStraight()
+    {
+        //Debug.Log(distanceTraveled);
+        //Debug.Log(moveDistance);
+        Debug.Log("Roatationx=" + transform.localEulerAngles.x + "Roatationy=" + transform.localEulerAngles.y);
+        //上を向いた場合での移動
+        if (isMoving && distanceTraveled < MoveDistance2 && transform.localEulerAngles.x == 90)
+        {
+            Debug.Log("直進(2倍上)");
+            // y軸方向に移動
+            Vector3 movement = new Vector3(0, moveSpeed*2, 0);
+            rb.MovePosition(transform.position + movement);
 
-            // 目標の回転角度（45度）に達したら回転を停止
-            if (Mathf.Abs(currentRotationAngle ) < 1.0f)
+            // 移動した距離を更新
+            distanceTraveled += moveSpeed*2 * Time.deltaTime;
+
+            // 移動距離が目標距離以上になったら移動を停止
+            if (distanceTraveled>= MoveDistance2)
             {
-                rb.angularVelocity = Vector3.zero; // 角速度をゼロに設定して停止
-                isRotating = false; // 回転を停止
-                Debug.Log("回転停止");
+                rb.constraints = RigidbodyConstraints.FreezeRotationY;
+                Debug.Log("停止");
+                isMoving = false;
+                // Rigidbodyの速度をゼロに設定して停止させる
+                rb.velocity = Vector3.zero;
             }
+        }
+        //右を向いた場合での移動
+        else if (isMoving && distanceTraveled < MoveDistance2 && transform.localEulerAngles.y == 270)
+        {
+            Debug.Log("直進(2倍右)");
+            // y軸方向に移動
+            Vector3 movement = new Vector3(moveSpeed*2, 0, 0);
+            rb.MovePosition(transform.position + movement);
+
+            // 移動した距離を更新
+            distanceTraveled += moveSpeed*2 * Time.deltaTime;
+
+            // 移動距離が目標距離以上になったら移動を停止
+            if (distanceTraveled >= MoveDistance2)
+            {
+                rb.constraints = RigidbodyConstraints.FreezeRotationY;
+                Debug.Log("停止");
+                isMoving = false;
+                // Rigidbodyの速度をゼロに設定して停止させる
+                rb.velocity = Vector3.zero;
+            }
+        }
+        //左を向いた場合での移動
+        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.y == 90)
+        {
+
+            Debug.Log("直進(2倍左)");
+            // y軸方向に移動
+            Vector3 movement = new Vector3(-moveSpeed*2, 0, 0);
+            rb.MovePosition(transform.position + movement);
+
+            // 移動した距離を更新
+            distanceTraveled += moveSpeed*2 * Time.deltaTime;
+
+            // 移動距離が目標距離以上になったら移動を停止
+            if (distanceTraveled >= MoveDistance2)
+            {
+                rb.constraints = RigidbodyConstraints.FreezeRotationY;
+                Debug.Log("停止");
+                isMoving = false;
+                // Rigidbodyの速度をゼロに設定して停止させる
+                rb.velocity = Vector3.zero;
+            }
+        }
+        //下を向いた場合での移動
+        else if (isMoving && distanceTraveled < moveDistance && transform.localEulerAngles.x == -90)
+        {
+            Debug.Log("直進(2倍下)");
+            // y軸方向に移動
+            Vector3 movement = new Vector3(0, -moveSpeed*2, 0);
+            rb.MovePosition(transform.position + movement);
+
+            // 移動した距離を更新
+            distanceTraveled += -moveSpeed*2 * Time.deltaTime;
+
+            // 移動距離が目標距離以上になったら移動を停止
+            if (distanceTraveled >= MoveDistance2)
+            {
+                rb.constraints = RigidbodyConstraints.FreezeRotationY;
+                Debug.Log("停止");
+                isMoving = false;
+                // Rigidbodyの速度をゼロに設定して停止させる
+                rb.velocity = Vector3.zero;
+            }
+        }
+        else
+        {
+            Debug.Log("なんか違う");
         }
     }
     public void callDebug()

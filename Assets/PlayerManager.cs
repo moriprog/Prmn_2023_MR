@@ -26,6 +26,8 @@ public class PlayerManager : MonoBehaviour
     void OnTriggerEnter(Collider obj)
     {
         Debug.Log("衝突");
+        Rigidbody rb = obj.gameObject.GetComponent<Rigidbody>();
+        rb.isKinematic = true;
         if (obj != null && obj.gameObject != null && count==0)
         {
             if (obj.gameObject.CompareTag("Straight"))
@@ -44,6 +46,12 @@ public class PlayerManager : MonoBehaviour
             {
                 Debug.Log("Right反応");
                 TargetgameObject.GetComponent<PlayerController>().Right();
+                count++;
+            }
+            else if (obj.gameObject.CompareTag("doubleStraight"))
+            {
+                Debug.Log("doubleStraight反応");
+                TargetgameObject.GetComponent<PlayerController>().doubleStraight();
                 count++;
             }
             else
